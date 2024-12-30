@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       <label>End Date:</label>
       <input type="date" value="${task.endDate || ''}" ${isNew ? '' : 'disabled'}>
-      
+      <br></br>
       <button class="update-progress-btn">Update Progress</button>
     `;
     taskItem.appendChild(inputContainer);
