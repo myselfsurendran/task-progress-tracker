@@ -1,0 +1,182 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 400px;
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+
+.task-input-container {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin: 20px 0;
+
+}
+
+#add-task-btn {
+
+  padding: 10px;
+
+  font-size: 16px;
+
+  margin-left: 10px;
+
+  cursor: pointer;
+
+  background-color: #4caf50;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 5px;
+
+}
+
+#add-task-btn:hover {
+  background: #45a049;
+}
+
+#task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Ensures that the inputs in the task item are displayed inline */
+.task-item input {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;  /* Adds space between input fields */
+  width: 120px;  /* Adjust width for better fit */
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.task-item.delayed {
+  background-color: #ffeb3b; /* Yellow for delayed */
+}
+
+.task-item.deadline-crossed {
+  background-color: #f44336; /* Red for deadline crossed */
+}
+
+
+
+.task-item label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  margin-top: 10px;
+}
+
+
+
+.task-item input {
+
+  padding: 10px;
+
+  font-size: 16px;
+
+  margin-bottom: 15px;  /* Adds space between input fields */
+
+  width: 250px;
+
+  border-radius: 5px;
+
+  border: 1px solid #ddd;
+
+}
+
+
+
+.task-item button {
+
+  padding: 10px;
+
+  font-size: 16px;
+
+  background-color: #4caf50;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+}
+/* Flexbox to align inputs in a row */
+.input-row {
+  display: flex;
+  gap: 10px; /* Space between the input fields */
+  justify-content: center;
+  margin-bottom: 15px; /* Adds space between rows */
+}
+
+.input-row label {
+  width: 120px;  /* Ensure labels align well with the inputs */
+}
+
+.input-row input {
+  width: 150px; /* Adjust width to be uniform for inputs */
+}
+
+/* Progress bar adjustments */
+.task-progress-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-top: 10px;
+  position: relative;
+  height: 30px; /* Increased height for better visibility */
+
+
+.task-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.task-status {
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 16px; /* Adjusted for readability */
+  color: white;
+  pointer-events: none; /* Prevent text from interfering with clicks */
+}
