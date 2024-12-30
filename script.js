@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to save tasks to localStorage
   function saveToLocalStorage() {
+    console.log('Saving tasks:', tasks); // Debugging log
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
       tasks = JSON.parse(storedTasks);
-      tasks.forEach((task) => renderTask(task, false)); // Render each task on the page
+      tasks.forEach((task) => renderTask(task, false)); // Render each task on the page (non-editable)
     }
   }
 
