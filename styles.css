@@ -13,7 +13,7 @@ body {
 
 .container {
   width: 90%; /* Adjust width to fit the screen better */
-  /*max-width: 40000px; /* Limit max width */
+  max-width: 40000px; /* Limit max width */
   text-align: center;
   background: white;
   padding: 15px; /* Reduced padding */
