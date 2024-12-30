@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to save tasks to localStorage
   function saveToLocalStorage() {
-    console.log('Saving tasks:', tasks); // Debugging log
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 
@@ -24,12 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
       tasks = JSON.parse(storedTasks);
-      tasks.forEach(renderTask); // Render each task on the page
+      tasks.forEach((task) => renderTask(task, false)); // Render each task on the page
     }
   }
 
   // Function to render individual tasks
-  function renderTask(task) {
+  function renderTask(task, isNew) {
     // Create task item container
     const taskItem = document.createElement('li');
     taskItem.className = 'task-item';
@@ -46,16 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputContainer = document.createElement('div');
     inputContainer.innerHTML = `
       <label>Total Task Value:</label>
-      <input type="number" value="${task.total || ''}" placeholder="Enter total" min="0" disabled>
+      <input type="number" value="${task.total || ''}" placeholder="Enter total" min="0" ${isNew ? '' : 'disabled'}>
       
       <label>Completed Task Value:</label>
       <input type="number" value="${task.completed || ''}" placeholder="Enter completed" min="0">
       
       <label>Start Date:</label>
-      <input type="date" value="${task.startDate || ''}" disabled>
+      <input type="date" value="${task.startDate || ''}" ${isNew ? '' : 'disabled'}>
       
       <label>End Date:</label>
-      <input type="date" value="${task.endDate || ''}" disabled>
+      <input type="date" value="${task.endDate || ''}" ${isNew ? '' : 'disabled'}>
       
       <button class="update-progress-btn">Update Progress</button>
     `;
@@ -73,11 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for updating progress
     const updateButton = inputContainer.querySelector('.update-progress-btn');
     updateButton.addEventListener('click', () => {
+      const totalInput = inputContainer.querySelector('input:nth-of-type(1)');
       const completedInput = inputContainer.querySelector('input:nth-of-type(2)');
-      const completed = parseInt(completedInput.value, 10) || 0;
+      const startDateInput = inputContainer.querySelector('input:nth-of-type(3)');
+      const endDateInput = inputContainer.querySelector('input:nth-of-type(4)');
 
-      if (completed >= 0 && completed <= task.total) {
+      // Update task values
+      const total = parseInt(totalInput.value, 10) || 0;
+      const completed = parseInt(completedInput.value, 10) || 0;
+      const startDate = startDateInput.value;
+      const endDate = endDateInput.value;
+
+      if (total > 0 && completed >= 0 && completed <= total && startDate && endDate) {
+        task.total = total;
         task.completed = completed;
+        task.startDate = startDate;
+        task.endDate = endDate;
         saveToLocalStorage(); // Save updated tasks to localStorage
 
         // Update progress bar and status
@@ -92,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
           progressBar.style.backgroundColor = '#4caf50';
         }
       } else {
-        alert('Completed value must be between 0 and Total value.');
+        alert('Please enter valid Total, Completed, Start Date, and End Date values.');
       }
     });
 
@@ -113,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       tasks.push(newTask);
       saveToLocalStorage(); // Save tasks after adding
-      renderTask(newTask);
+      renderTask(newTask, true); // Render the task as editable
       taskInput.value = ''; // Clear input after adding
     } else {
       alert('Task name cannot be empty.');
