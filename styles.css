@@ -13,18 +13,12 @@ body {
 
 .container {
   width: 90%; /* Adjust width to fit the screen better */
-  max-width: 400px; /* Limit max width */
+  max-width: 40000px; /* Limit max width */
   text-align: center;
   background: white;
   padding: 15px; /* Reduced padding */
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.task-input {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
 }
 
 
@@ -38,24 +32,30 @@ body {
 
 }
 
-#add-task-btn {
+.task-input {
+  display: flex;
+  justify-content: center; /* Center the input and button horizontally */
+  align-items: center; /* Align items vertically */
+  margin-bottom: 20px;
+}
 
+.task-input input {
+  width: 60%; /* Adjust width of the input field */
   padding: 10px;
-
   font-size: 16px;
-
-  margin-left: 10px;
-
-  cursor: pointer;
-
-  background-color: #4caf50;
-
-  color: white;
-
-  border: none;
-
+  margin-right: 10px; /* Space between input and button */
   border-radius: 5px;
+  border: 1px solid #ddd;
+}
 
+#add-task-btn {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 #add-task-btn:hover {
