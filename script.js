@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let progressBarColor = '#4caf50';  // Green by default
         let taskTitleColor = '#333'; // Default title color
         if (elapsedDays > totalDays) {
-          taskStatusText = 'Deadline crossed';
+          delayText = 'Deadline crossed';
           progressBarColor = '#f44336'; // Red for deadline crossed
           taskTitleColor = '#f44336'; // Red for title
         } else if (expectedProgress > (completed / total) * 100) {
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.backgroundColor = progressBarColor;
         taskNameElem.style.color = taskTitleColor; // Change the color of the task title
 
-        taskStatus.textContent = ` - ${Math.round(progress)}% Completed${delayText}`;
+        taskStatus.textContent = ` - ${Math.round(progress)}% Completed ${delayText}`;
       } else {
         alert('Please enter valid Total, Completed, Start Date, and End Date values.');
       }
@@ -160,4 +160,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
