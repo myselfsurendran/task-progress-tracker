@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskInput = document.getElementById('task-input');
   const addTaskBtn = document.getElementById('add-task-btn');
   const taskList = document.getElementById('task-list');
+  let tasks = []; // To hold tasks in memory
 
   // Function to calculate the days between two dates
   function calculateDaysBetweenDates(startDate, endDate) {
@@ -12,11 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
     return Math.floor(daysDifference);
   }
 
+  // Function to save tasks to localStorage
+  function saveToLocalStorage() {
+    console.log('Saving tasks:', tasks); // Debugging log
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  // Function to load tasks from localStorage
+  function loadFromLocalStorage() {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      tasks = JSON.parse(storedTasks);
+      tasks.forEach(renderTask); // Render each task on the page
+    }
+  }
+
   // Function to render individual tasks
   function renderTask(task) {
+    // Create task item container
     const taskItem = document.createElement('li');
     taskItem.className = 'task-item';
 
+    // Add task name and status
     const taskNameElem = document.createElement('p');
     const taskStatus = document.createElement('span');
     taskStatus.className = 'task-status';
@@ -24,118 +42,84 @@ document.addEventListener('DOMContentLoaded', () => {
     taskNameElem.appendChild(taskStatus);
     taskItem.appendChild(taskNameElem);
 
+    // Add inputs for Total, Completed, Start Date, and End Date
     const inputContainer = document.createElement('div');
     inputContainer.innerHTML = `
-      <label for="total-input">Total Task Value:</label>
-      <input type="number" id="total-input" value="${task.total}" readonly>
+      <label>Total Task Value:</label>
+      <input type="number" value="${task.total || ''}" placeholder="Enter total" min="0" disabled>
       
-      <label for="completed-input">Completed Task Value:</label>
-      <input type="number" id="completed-input" value="${task.completed}">
+      <label>Completed Task Value:</label>
+      <input type="number" value="${task.completed || ''}" placeholder="Enter completed" min="0">
       
-      <label for="start-date-input">Start Date:</label>
-      <input type="date" id="start-date-input" value="${task.startDate}" readonly>
+      <label>Start Date:</label>
+      <input type="date" value="${task.startDate || ''}" disabled>
       
-      <label for="end-date-input">End Date:</label>
-      <input type="date" id="end-date-input" value="${task.endDate}" readonly>
+      <label>End Date:</label>
+      <input type="date" value="${task.endDate || ''}" disabled>
       
       <button class="update-progress-btn">Update Progress</button>
     `;
     taskItem.appendChild(inputContainer);
 
+    // Add progress bar
     const progressBarContainer = document.createElement('div');
     progressBarContainer.className = 'task-progress-container';
     const progressBar = document.createElement('div');
     progressBar.className = 'task-progress-bar';
+    progressBar.style.width = `${(task.completed / task.total) * 100 || 0}%`;
     progressBarContainer.appendChild(progressBar);
     taskItem.appendChild(progressBarContainer);
 
+    // Event listener for updating progress
     const updateButton = inputContainer.querySelector('.update-progress-btn');
     updateButton.addEventListener('click', () => {
-      const total = parseInt(inputContainer.querySelector('#total-input').value, 10) || 0;
-      const completed = parseInt(inputContainer.querySelector('#completed-input').value, 10) || 0;
-      const startDate = inputContainer.querySelector('#start-date-input').value;
-      const endDate = inputContainer.querySelector('#end-date-input').value;
+      const completedInput = inputContainer.querySelector('input:nth-of-type(2)');
+      const completed = parseInt(completedInput.value, 10) || 0;
 
-      if (total > 0 && completed >= 0 && completed <= total && startDate && endDate) {
-        const totalDays = calculateDaysBetweenDates(startDate, endDate);
-        const currentDate = new Date();
-        const elapsedDays = calculateDaysBetweenDates(startDate, currentDate);
-        const progressPerDay = 100 / totalDays;
-        const expectedProgress = progressPerDay * elapsedDays;
+      if (completed >= 0 && completed <= task.total) {
+        task.completed = completed;
+        saveToLocalStorage(); // Save updated tasks to localStorage
 
-        let progress = (completed / total) * 100;
+        // Update progress bar and status
+        const progress = (task.completed / task.total) * 100 || 0;
         progressBar.style.width = `${progress}%`;
 
-        let statusText = `${Math.round(progress)}% Completed`;
-        let delayText = '';
-        if (elapsedDays > totalDays) {
-          progressBar.style.background = 'red';
-          taskStatus.style.color = 'red';
-          statusText = 'Deadline crossed';
-        } else if (expectedProgress > progress) {
-          const delayInDays = Math.ceil(
-            ((progressPerDay * elapsedDays) / 100) * total - completed
-          );
-          progressBar.style.background = 'yellow';
-          taskStatus.style.color = 'yellow';
-          delayText = ` --> Delayed by ${delayInDays} day(s)`;
+        if (task.completed === task.total) {
+          taskStatus.textContent = 'Task Completed';
+          progressBar.style.backgroundColor = '#4caf50';
         } else {
-          progressBar.style.background = '#4caf50';
-          taskStatus.style.color = '#4caf50';
+          taskStatus.textContent = `${Math.round(progress)}% Completed`;
+          progressBar.style.backgroundColor = '#4caf50';
         }
-
-        taskStatus.textContent = `${statusText}${delayText}`;
-        updateTaskInLocalStorage(task.name, total, completed, startDate, endDate);
       } else {
-        alert('Please enter valid Total, Completed, Start Date, and End Date values.');
+        alert('Completed value must be between 0 and Total value.');
       }
     });
 
+    // Add task item to the list
     taskList.appendChild(taskItem);
-  }
-
-  // Function to add task to localStorage
-  function addTaskToLocalStorage(taskName, total, completed, startDate, endDate) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.push({ name: taskName, total, completed, startDate, endDate });
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
-
-  // Function to update a task in localStorage
-  function updateTaskInLocalStorage(taskName, total, completed, startDate, endDate) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const updatedTasks = tasks.map(task => {
-      if (task.name === taskName) {
-        return { name: taskName, total, completed, startDate, endDate };
-      }
-      return task;
-    });
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  }
-
-  // Load tasks from localStorage and render them
-  function loadTasksFromLocalStorage() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.forEach(task => renderTask(task));
   }
 
   // Event listener for adding tasks
   addTaskBtn.addEventListener('click', () => {
     const taskName = taskInput.value.trim();
-    const total = 0;
-    const completed = 0;
-    const startDate = new Date().toISOString().slice(0, 10);
-    const endDate = new Date().toISOString().slice(0, 10);
-
     if (taskName) {
-      addTaskToLocalStorage(taskName, total, completed, startDate, endDate);
-      renderTask({ name: taskName, total, completed, startDate, endDate });
-      taskInput.value = '';
+      const newTask = {
+        name: taskName,
+        completed: 0,
+        total: 0,
+        startDate: null,
+        endDate: null,
+      };
+      tasks.push(newTask);
+      saveToLocalStorage(); // Save tasks after adding
+      renderTask(newTask);
+      taskInput.value = ''; // Clear input after adding
     } else {
       alert('Task name cannot be empty.');
     }
   });
 
   // Load tasks on page load
-  loadTasksFromLocalStorage();
+  loadFromLocalStorage();
 });
