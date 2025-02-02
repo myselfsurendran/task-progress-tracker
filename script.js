@@ -34,11 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskItem = document.createElement('li');
     taskItem.className = 'task-item';
 
-    // Add task name and status
+    // Add task name, status, and percentage completion in the heading
     const taskNameElem = document.createElement('p');
     const taskStatus = document.createElement('span');
     taskStatus.className = 'task-status';
-    taskNameElem.textContent = task.name;
+
+    // Add percentage completion to the task heading
+    taskNameElem.innerHTML = `${task.name} - <strong>${task.percentageCompleted}% Completed</strong>`;
     taskNameElem.appendChild(taskStatus);
     taskItem.appendChild(taskNameElem);
 
@@ -51,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <label>Completed Task Value:</label>
       <input type="number" value="${task.completed || ''}" placeholder="Enter completed" min="0">
       
-      <label>Start Date:</label>
+      <label>Planned Start Date:</label>
       <input type="date" value="${task.startDate || ''}" ${isNew ? '' : 'disabled'}>
       
-      <label>End Date:</label>
+      <label>Planned End Date:</label>
       <input type="date" value="${task.endDate || ''}" ${isNew ? '' : 'disabled'}>
       <br></br>
       <button class="update-progress-btn">Update Progress</button>
@@ -89,7 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
         task.completed = completed;
         task.startDate = startDate;
         task.endDate = endDate;
+
+        // Calculate the percentage completed
+        task.percentageCompleted = Math.round((task.completed / task.total) * 100);
+
         saveToLocalStorage(); // Save updated tasks to localStorage
+
+        // Update task heading to show the percentage
+        taskNameElem.innerHTML = `${task.name} - <strong>${task.percentageCompleted}% Completed</strong>`;
 
         // Update progress bar and status
         const progress = (task.completed / task.total) * 100 || 0;
@@ -115,13 +124,16 @@ document.addEventListener('DOMContentLoaded', () => {
   addTaskBtn.addEventListener('click', () => {
     const taskName = taskInput.value.trim();
     if (taskName) {
+      // Create the new task object
       const newTask = {
         name: taskName,
         completed: 0,
         total: 0,
         startDate: null,
         endDate: null,
+        percentageCompleted: 0, // New parameter for percentage completion
       };
+
       tasks.push(newTask);
       saveToLocalStorage(); // Save tasks after adding
       renderTask(newTask, true); // Render the task as editable
@@ -134,3 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load tasks on page load
   loadFromLocalStorage();
 });
+
+// Function to reset all tasks
+function resetTasks() {
+  localStorage.removeItem('tasks'); // Clear tasks from localStorage
+  tasks = []; // Clear tasks array
+  taskList.innerHTML = ''; // Remove all tasks from UI
+  location.reload(); // Reload the page
+}
+
+// Add event listener to reset button
+document.getElementById('reset-tasks-btn').addEventListener('click', resetTasks);
