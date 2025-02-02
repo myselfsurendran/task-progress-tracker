@@ -1,4 +1,3 @@
-
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f4f8;
@@ -7,20 +6,18 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Changed to allow scrolling */
+  align-items: flex-start;
   height: 100vh;
-  overflow-y: auto; /* Ensure overall page is scrollable */
+  overflow-y: auto;
 }
 
 .container {
-  width: 400px;
+  max-width: 800px;
+  width: 90%;
   text-align: center;
-  background: white;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .task-input-container {
@@ -31,16 +28,16 @@ body {
 
 .task-input {
   display: flex;
-  justify-content: center; /* Center the input and button horizontally */
-  align-items: center; /* Align items vertically */
+  justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .task-input input {
-  width: 60%; /* Adjust width of the input field */
+  width: 60%;
   padding: 10px;
   font-size: 16px;
-  margin-right: 10px; /* Space between input and button */
+  margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
@@ -62,26 +59,25 @@ body {
 #task-list {
   list-style-type: none;
   padding: 0;
-  overflow-y: auto; /* Allow vertical scrolling */
-  max-height: 400px; /* Set a max height for the task list container */
-  margin-top: 20px; /* Add margin to give some space above the task list */
+  overflow-y: auto;
+  margin-top: 20px;
 }
-/* Ensures that the inputs in the task item are displayed inline */
+
 .task-item input {
   padding: 10px;
   font-size: 16px;
-  margin-bottom: 15px;  /* Adds space between input fields */
-  width: 120px;  /* Adjust width for better fit */
+  margin-bottom: 15px;
+  width: 250px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
 
 .task-item.delayed {
-  background-color: #ffeb3b; /* Yellow for delayed */
+  background-color: #ffeb3b;
 }
 
 .task-item.deadline-crossed {
-  background-color: #f44336; /* Red for deadline crossed */
+  background-color: #f44336;
 }
 
 .task-item label {
@@ -92,15 +88,6 @@ body {
   margin-top: 10px;
 }
 
-.task-item input {
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 15px;  /* Adds space between input fields */
-  width: 250px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
 .task-item button {
   padding: 10px;
   font-size: 16px;
@@ -109,26 +96,24 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px; /* Add some spacing from the last input field */
-
+  margin-top: 10px;
 }
-/* Flexbox to align inputs in a row */
+
 .input-row {
   display: flex;
-  gap: 10px; /* Space between the input fields */
+  gap: 10px;
   justify-content: center;
-  margin-bottom: 15px; /* Adds space between rows */
+  margin-bottom: 15px;
 }
 
 .input-row label {
-  width: 120px;  /* Ensure labels align well with the inputs */
+  width: 120px;
 }
 
 .input-row input {
-  width: 150px; /* Adjust width to be uniform for inputs */
+  width: 150px;
 }
 
-/* Progress bar adjustments */
 .task-progress-container {
   width: 100%;
   background: #ddd;
@@ -136,7 +121,8 @@ body {
   overflow: hidden;
   margin-top: 10px;
   position: relative;
-  height: 30px; /* Increased height for better visibility */
+  height: 30px;
+}
 
 .task-progress-bar {
   height: 100%;
@@ -155,7 +141,7 @@ body {
   position: absolute;
   width: 100%;
   text-align: center;
-  font-size: 16px; /* Adjusted for readability */
+  font-size: 16px;
   color: white;
-  pointer-events: none; /* Prevent text from interfering with clicks */
+  pointer-events: none;
 }
