@@ -131,15 +131,47 @@ body {
 
 .task-progress-bar {
   height: 100%;
-  width: 0%;
-  background: #4caf50;
-  transition: width 0.3s ease;
+  background-color: #4caf50; /* Fill color (green) */
+  border-radius: 5px; /* Optional, for rounded corners */
+}
+
+.progress-bar-text {
+  position: absolute;
+  top: 50%; /* Position the text vertically centered */
+  left: 50%; /* Position the text horizontally centered */
+  transform: translate(-50%, -50%); /* Adjust to truly center the text */
+  color: black; /* Text color (adjust as needed) */
+  font-weight: bold; /* Make the text bold */
+  font-size: 14px; /* Adjust the font size as needed */
 }
 
 .task-status {
   font-weight: bold;
   font-size: 14px;
   margin-left: 10px;
+}
+
+.task-status-box {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  color: white; /* Text color for all statuses */
+  margin-top: 5px; /* Added margin for separation */
+  display: inline-block; /* To make it fit the status content */
+}
+
+
+.on-track {
+  background-color: #4caf50; /* Green for On Track */
+}
+
+.delayed {
+  background-color: #ffeb3b; /* Yellow for Delayed */
+}
+
+.deadline-passed {
+  background-color: #f44336; /* Red for Deadline Passed */
 }
 
 .progress-text {
